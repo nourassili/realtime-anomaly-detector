@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    command:
+      - redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M --node-id 0 --check=false --kafka-addr 0.0.0.0:9092,PLAINTEXT://0.0.0.0:19092 --advertise-kafka-addr PLAINTEXT://redpanda:9092,PLAINTEXT://localhost:19092
+    ports:
+      - "19092:19092"
+      - "9092:9092"
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fraud
+    ports: ["5432:5432"]
+
+  app:
+    build: .
+    environment:
+      BROKERS: "redpanda:9092"
+      REDIS_URL: "redis://redis:6379/0"
+      PG_DSN: "postgresql+psycopg2://postgres:postgres@postgres:5432/fraud"
+      TOPIC: "txns"
+      GROUP_ID: "fraud-consumer"
+    depends_on: [redpanda, redis, postgres]
+    ports: ["9000:9000"]
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports: ["9090:9090"]
+    depends_on: [app]
+
+  grafana:
+    image: grafana/grafana:latest
+    ports: ["3000:3000"]
+    volumes:
+      - ./infra/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./infra/grafana/dashboards/:/var/lib/grafana/dashboards/
+    depends_on: [prometheus]

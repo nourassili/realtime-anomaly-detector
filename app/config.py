@@ -1,0 +1,10 @@
+BROKERS = "localhost:19092"
+TOPIC = "txns"
+GROUP_ID = "fraud-consumer"
+METRICS_PORT = 9000
+BATCH_SIZE = 200
+REDIS_URL = "redis://localhost:6379/0"
+PG_DSN = "postgresql+psycopg2://postgres:postgres@localhost:5432/fraud"
+WINDOW_S = 60
+MAX_PER_USER = 50
+ANOMALY_THRESHOLD = 0.0

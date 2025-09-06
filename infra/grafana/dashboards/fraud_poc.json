@@ -1,0 +1,80 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Events Processed / 5s",
+      "targets": [
+        {
+          "expr": "rate(events_processed_total[5m]) * 5",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Anomalies / 5s",
+      "targets": [
+        {
+          "expr": "rate(events_anomalies_total[5m]) * 5",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Latency (p50/p95/p99)",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.5, sum(rate(event_latency_seconds_bucket[5m])) by (le))",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(event_latency_seconds_bucket[5m])) by (le))",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(event_latency_seconds_bucket[5m])) by (le))",
+          "refId": "C"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 0,
+        "y": 6
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "fraud"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "title": "Fraud POC \u2013 Latency & RPS",
+  "version": 1
+}
