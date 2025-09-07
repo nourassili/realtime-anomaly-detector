@@ -17,7 +17,7 @@
 
 ## Quick Start
 
-### 1) Bring up infra
+### 1) Infra
 ```bash
 docker-compose up -d
 # Wait ~15–30s for Redpanda, Postgres, Redis, Prometheus, Grafana, App
