@@ -60,12 +60,6 @@ See [`DESIGN.md`](DESIGN.md) for a 2‑page overview (SLOs, capacity plan, failu
 
 ---
 
-## Resume‑safe bullets
-- Prototyped a Kafka‑based near‑real‑time fraud pipeline (Python, Redis, Postgres), handling **simulated 5M+ events/day**, **p95 < 2s** under burst, and instrumented with **Prometheus/Grafana** dashboards.
-- Exported IsolationForest to **ONNX** and benchmarked ONNXRuntime vs sklearn; implemented **micro‑batching**, DLQ (todo), and idempotent writes.
-
----
-
 ## Notes
 - Redpanda is Kafka‑compatible and auto‑creates topics on first produce.
 - Default credentials (dev only): Postgres `postgres:postgres` on `fraud` DB.  
